@@ -153,6 +153,10 @@ const app = express();
 app.use(express.json({ limit: '15mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', (req, res) => {
+  res.redirect('/control.html');
+});
+
 app.get('/api/state', (req, res) => res.json(currentState));
 
 const server = http.createServer(app);
