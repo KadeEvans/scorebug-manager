@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scorebug Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="control.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">&#9673;</span>
+    <span class="brand-name">Scorebug Control</span>
+  </div>
+  <div class="topbar-controls">
+    <label class="field-inline">
+      <span>Sport</span>
+      <select id="sportSelect">
+        <option value="football">Football</option>
+        <option value="basketball">Basketball</option>
+        <option value="baseball">Baseball / Softball</option>
+        <option value="soccer">Soccer</option>
+        <option value="volleyball">Volleyball</option>
+        <option value="generic">Other / generic</option>
+      </select>
+    </label>
+    <button id="visibilityToggle" class="btn btn-toggle">Bug: ON AIR</button>
+    <span id="connStatus" class="conn-status">connecting&hellip;</span>
+    <button id="pregameBtn" class="btn btn-toggle">Pre-game</button>
+    <button id="saveBtn" class="btn btn-toggle">Save</button>
+    <button id="collapseAllBtn" class="btn btn-ghost">Collapse all</button>
+    <button id="expandAllBtn" class="btn btn-ghost">Expand all</button>
+    <button id="resetBtn" class="btn btn-ghost">Reset game</button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <section class="col col-setup">
+    <div class="card">
+      <h2>Event logo</h2>
+      <div class="logo-row">
+        <img id="eventLogoPreview" class="logo-preview" alt="">
+        <div class="logo-actions">
+          <label class="btn btn-small">Upload<input type="file" id="eventLogoInput" accept="image/*" hidden></label>
+          <button class="btn btn-small btn-ghost" id="eventLogoClear">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card team-card away-card">
+      <h2>Away team</h2>
+      <label class="field">Name<input type="text" id="awayName" placeholder="AWAY"></label>
+      <label class="field">Color<input type="color" id="awayColor" value="#D6483C"></label>
+      <div class="field-row">
+        <label class="field">Overall record<input type="text" id="awayRecordOverall" placeholder="6-0"></label>
+        <label class="field">Region record<input type="text" id="awayRecordRegion" placeholder="2-0"></label>
+      </div>
+      <div class="rank-row">
+        <label class="check-field"><input type="checkbox" id="awayRanked"> Ranked</label>
+        <label class="field rank-field">Rank<input type="number" id="awayRank" min="1" max="99" placeholder="#" disabled></label>
+      </div>
+      <div class="logo-row">
+        <img id="awayLogoPreview" class="logo-preview" alt="">
+        <div class="logo-actions">
+          <label class="btn btn-small">Upload<input type="file" id="awayLogoInput" accept="image/*" hidden></label>
+          <button class="btn btn-small btn-ghost" id="awayLogoClear">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card team-card home-card">
+      <h2>Home team</h2>
+      <label class="field">Name<input type="text" id="homeName" placeholder="HOME"></label>
+      <label class="field">Color<input type="color" id="homeColor" value="#2E6DE0"></label>
+      <div class="field-row">
+        <label class="field">Overall record<input type="text" id="homeRecordOverall" placeholder="6-0"></label>
+        <label class="field">Region record<input type="text" id="homeRecordRegion" placeholder="2-0"></label>
+      </div>
+      <div class="rank-row">
+        <label class="check-field"><input type="checkbox" id="homeRanked"> Ranked</label>
+        <label class="field rank-field">Rank<input type="number" id="homeRank" min="1" max="99" placeholder="#" disabled></label>
+      </div>
+      <div class="logo-row">
+        <img id="homeLogoPreview" class="logo-preview" alt="">
+        <div class="logo-actions">
+          <label class="btn btn-small">Upload<input type="file" id="homeLogoInput" accept="image/*" hidden></label>
+          <button class="btn btn-small btn-ghost" id="homeLogoClear">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Appearance</h2>
+      <label class="field">Layout orientation
+        <select id="orientationSelect" class="select-small" style="margin-top:0;width:100%">
+          <option value="bottom">Bottom frame</option>
+          <option value="top">Top frame</option>
+          <option value="stack">Side / stacked</option>
+        </select>
+      </label>
+      <label class="field">Panel background<input type="color" id="panelColor" value="#0F1218"></label>
+      <label class="field">Panel opacity
+        <input type="range" id="panelOpacity" min="0.4" max="1" step="0.01" value="0.94">
+        <span class="range-val" id="panelOpacityVal">94%</span>
+      </label>
+    </div>
+
+    <div class="card">
+      <h2>Scorebug elements</h2>
+      <div class="toggle-grid" id="elementToggles"></div>
+    </div>
+  </section>
+
+  <section class="col col-live">
+    <div class="card score-card">
+      <h2>Score</h2>
+      <div class="score-row">
+        <div class="score-unit">
+          <div class="score-unit-label" id="scoreLabelAway">AWAY</div>
+          <div class="score-big" id="scoreDisplayAway">0</div>
+          <div class="score-btns" id="scoreBtnsAway"></div>
+        </div>
+        <div class="score-unit">
+          <div class="score-unit-label" id="scoreLabelHome">HOME</div>
+          <div class="score-big" id="scoreDisplayHome">0</div>
+          <div class="score-btns" id="scoreBtnsHome"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Clock &amp; period</h2>
+      <p class="hint" id="pregameHint" hidden>Pre-game preset is on: logos + records, with &ldquo;TIME TILL START&rdquo; and the countdown below. Set the countdown, then hit Start.</p>
+      <div class="clock-row">
+        <div class="clock-set">
+          <input type="text" id="clockInput" class="clock-input" value="12:00">
+          <div class="btn-row">
+            <button class="btn" id="clockStartStop">Start</button>
+            <button class="btn btn-ghost" id="clockReset">Reset</button>
+          </div>
+          <select id="clockMode" class="select-small">
+            <option value="countdown">Countdown</option>
+            <option value="countup">Count up</option>
+            <option value="hidden">No clock</option>
+          </select>
+        </div>
+        <div class="period-set">
+          <label class="field">Period label<input type="text" id="periodInput" maxlength="24" placeholder="1ST"></label>
+          <div class="btn-row">
+            <button class="btn btn-ghost" id="periodPrev">&larr; Prev</button>
+            <button class="btn btn-ghost" id="periodNext">Next &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="possessionCard">
+      <h2>Possession</h2>
+      <div class="btn-row">
+        <button class="btn btn-toggle" id="possAwayBtn">Away</button>
+        <button class="btn btn-ghost" id="possNoneBtn">None</button>
+        <button class="btn btn-toggle" id="possHomeBtn">Home</button>
+      </div>
+    </div>
+
+    <div class="card" id="specialStatsCard">
+      <h2>Special stats</h2>
+      <label class="field">Title<input type="text" id="popupTitle" placeholder="Player of the Game"></label>
+      <label class="field">Player / team<input type="text" id="popupSubject" placeholder="J. Smith"></label>
+      <div class="stat-rows">
+        <div class="stat-row">
+          <input type="text" id="popupStat0Label" placeholder="Label" class="stat-input">
+          <input type="text" id="popupStat0Value" placeholder="Value" class="stat-input">
+        </div>
+        <div class="stat-row">
+          <input type="text" id="popupStat1Label" placeholder="Label" class="stat-input">
+          <input type="text" id="popupStat1Value" placeholder="Value" class="stat-input">
+        </div>
+        <div class="stat-row">
+          <input type="text" id="popupStat2Label" placeholder="Label" class="stat-input">
+          <input type="text" id="popupStat2Value" placeholder="Value" class="stat-input">
+        </div>
+        <div class="stat-row">
+          <input type="text" id="popupStat3Label" placeholder="Label" class="stat-input">
+          <input type="text" id="popupStat3Value" placeholder="Value" class="stat-input">
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:10px">
+        <button class="btn btn-toggle" id="popupDeployBtn">Deploy</button>
+        <button class="btn btn-ghost" id="popupHideBtn">Hide</button>
+      </div>
+    </div>
+
+    <div class="card" id="timeoutsCard">
+      <h2>Timeouts</h2>
+      <div class="two-col">
+        <div>
+          <div class="mini-label">Away</div>
+          <div class="btn-row"><button class="btn btn-small" id="awayToMinus">&minus;</button><span id="awayToVal">3</span><button class="btn btn-small" id="awayToPlus">+</button></div>
+        </div>
+        <div>
+          <div class="mini-label">Home</div>
+          <div class="btn-row"><button class="btn btn-small" id="homeToMinus">&minus;</button><span id="homeToVal">3</span><button class="btn btn-small" id="homeToPlus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="foulsCard">
+      <h2>Fouls</h2>
+      <div class="two-col">
+        <div>
+          <div class="mini-label">Away</div>
+          <div class="btn-row"><button class="btn btn-small" id="awayFoulMinus">&minus;</button><span id="awayFoulVal">0</span><button class="btn btn-small" id="awayFoulPlus">+</button></div>
+        </div>
+        <div>
+          <div class="mini-label">Home</div>
+          <div class="btn-row"><button class="btn btn-small" id="homeFoulMinus">&minus;</button><span id="homeFoulVal">0</span><button class="btn btn-small" id="homeFoulPlus">+</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Football -->
+    <div class="card sport-panel" data-sport="football">
+      <h2>Football</h2>
+      <div class="btn-row">
+        <span class="mini-label">Down</span>
+        <button class="btn btn-small down-btn" data-down="1">1st</button>
+        <button class="btn btn-small down-btn" data-down="2">2nd</button>
+        <button class="btn btn-small down-btn" data-down="3">3rd</button>
+        <button class="btn btn-small down-btn" data-down="4">4th</button>
+      </div>
+      <div class="btn-row">
+        <span class="mini-label">Distance</span>
+        <button class="btn btn-small" id="distMinus">&minus;</button>
+        <span id="distVal">10</span>
+        <button class="btn btn-small" id="distPlus">+</button>
+      </div>
+      <div class="btn-row">
+        <span class="mini-label">Ball on</span>
+        <select id="ballSide" class="select-small">
+          <option value="away">Away side</option>
+          <option value="home">Home side</option>
+        </select>
+        <button class="btn btn-small" id="yardMinus">&minus;</button>
+        <span id="yardVal">50</span>
+        <button class="btn btn-small" id="yardPlus">+</button>
+      </div>
+    </div>
+
+    <!-- Basketball -->
+    <div class="card sport-panel" data-sport="basketball">
+      <h2>Basketball</h2>
+      <div class="btn-row">
+        <span class="mini-label">Shot clock</span>
+        <button class="btn btn-small" id="shotStartStop">Start</button>
+        <button class="btn btn-small btn-ghost" id="shot24">:24</button>
+        <button class="btn btn-small btn-ghost" id="shot14">:14</button>
+      </div>
+      <div class="btn-row">
+        <span class="mini-label">Bonus</span>
+        <button class="btn btn-small btn-toggle" id="bonusAwayBtn">Away</button>
+        <button class="btn btn-small btn-toggle" id="bonusHomeBtn">Home</button>
+      </div>
+    </div>
+
+    <!-- Baseball -->
+    <div class="card sport-panel" data-sport="baseball">
+      <h2>Baseball / Softball</h2>
+      <div class="btn-row">
+        <span class="mini-label">Inning</span>
+        <button class="btn btn-small" id="inningMinus">&minus;</button>
+        <span id="inningVal">1</span>
+        <button class="btn btn-small" id="inningPlus">+</button>
+        <button class="btn btn-small btn-ghost" id="halfToggle">Top</button>
+      </div>
+      <div class="btn-row">
+        <span class="mini-label">Count</span>
+        <button class="btn btn-small" id="ballPlus">Ball</button>
+        <button class="btn btn-small" id="strikePlus">Strike</button>
+        <button class="btn btn-small" id="outPlus">Out</button>
+        <button class="btn btn-small btn-ghost" id="countReset">Clear count</button>
+      </div>
+      <div class="btn-row">
+        <span class="mini-label">Runners</span>
+        <button class="btn btn-small btn-toggle" id="runner1">1st</button>
+        <button class="btn btn-small btn-toggle" id="runner2">2nd</button>
+        <button class="btn btn-small btn-toggle" id="runner3">3rd</button>
+      </div>
+    </div>
+
+    <!-- Soccer -->
+    <div class="card sport-panel" data-sport="soccer">
+      <h2>Soccer</h2>
+      <div class="btn-row">
+        <span class="mini-label">Half</span>
+        <button class="btn btn-small" id="halfMinus">&minus;</button>
+        <span id="halfVal">1</span>
+        <button class="btn btn-small" id="halfPlus">+</button>
+      </div>
+      <p class="hint">Tip: set the clock mode above to &ldquo;Count up&rdquo; for a running match clock.</p>
+    </div>
+
+    <!-- Volleyball -->
+    <div class="card sport-panel" data-sport="volleyball">
+      <h2>Volleyball</h2>
+      <div class="btn-row">
+        <span class="mini-label">Sets won &ndash; Away</span>
+        <button class="btn btn-small" id="awaySetMinus">&minus;</button>
+        <span id="awaySetVal">0</span>
+        <button class="btn btn-small" id="awaySetPlus">+</button>
+      </div>
+      <div class="btn-row">
+        <span class="mini-label">Sets won &ndash; Home</span>
+        <button class="btn btn-small" id="homeSetMinus">&minus;</button>
+        <span id="homeSetVal">0</span>
+        <button class="btn btn-small" id="homeSetPlus">+</button>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="col col-obs">
+    <div class="card">
+      <h2>Add to OBS</h2>
+      <p class="hint">In OBS: Sources &rarr; + &rarr; Browser Source &rarr; paste this URL. Check &ldquo;Shutdown source when not visible&rdquo; off, and set width/height around 1000&times;320 (a bit taller so score animations under the bug are visible).</p>
+      <div class="url-box">
+        <code id="overlayUrl">http://localhost:4173/overlay.html</code>
+        <button class="btn btn-small" id="copyUrlBtn">Copy</button>
+      </div>
+      <a id="previewLink" href="overlay.html" target="_blank" class="btn btn-ghost btn-small">Open preview</a>
+    </div>
+  </section>
+
+</main>
+
+<script src="control.js"></script>
+</body>
+</html>

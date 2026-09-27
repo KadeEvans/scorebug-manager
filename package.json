@@ -1,0 +1,13 @@
+{
+  "name": "scorebug-manager",
+  "version": "1.0.0",
+  "description": "Local scorebug manager for high school sports with a live OBS browser-source overlay",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ws": "^8.17.0"
+  }
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scorebug Overlay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+
+<div id="bug" class="bug hidden">
+  <div id="bugPopup" class="bug-popup hidden">
+    <div class="popup-title" id="popupTitle"></div>
+    <div class="popup-subject" id="popupSubject"></div>
+    <div class="popup-stats" id="popupStats"></div>
+  </div>
+
+  <div class="bug-main">
+    <div class="team-block away">
+      <div class="team-bar" id="awayBar"></div>
+      <img id="awayLogo" class="team-logo" alt="" />
+      <div class="team-copy">
+        <div class="team-name-row">
+          <span class="team-rank" id="awayRank"></span>
+          <span class="team-name" id="awayName">AWAY</span>
+        </div>
+        <div class="team-record" id="awayRecord"></div>
+      </div>
+      <div class="team-score" id="awayScore">0</div>
+      <div class="poss-arrow poss-left" id="possAway">&#9668;</div>
+    </div>
+
+    <div class="center-block">
+      <div class="center-chrome">
+        <div class="event-logo-wrap" id="eventLogoWrap">
+          <img id="eventLogo" class="event-logo" alt="" />
+        </div>
+        <div class="period" id="periodLabel">1ST</div>
+      </div>
+      <div class="clock-slot" id="clockSlot">
+        <div class="clock" id="clockDisplay">12:00</div>
+      </div>
+    </div>
+
+    <div class="team-block home">
+      <div class="poss-arrow poss-right" id="possHome">&#9658;</div>
+      <div class="team-score" id="homeScore">0</div>
+      <div class="team-copy">
+        <div class="team-name-row">
+          <span class="team-rank" id="homeRank"></span>
+          <span class="team-name" id="homeName">HOME</span>
+        </div>
+        <div class="team-record" id="homeRecord"></div>
+      </div>
+      <img id="homeLogo" class="team-logo" alt="" />
+      <div class="team-bar" id="homeBar"></div>
+    </div>
+  </div>
+
+  <div class="bug-sub" id="subStrip">
+    <div class="sub-item" id="subDownDistance">3RD &amp; 7 &nbsp;&bull;&nbsp; BALL ON 35</div>
+    <div class="sub-item" id="subTimeouts">
+      <span class="to-label">TO</span>
+      <span class="dots" id="awayTimeoutDots"></span>
+      <span class="to-sep">/</span>
+      <span class="dots" id="homeTimeoutDots"></span>
+    </div>
+    <div class="sub-item" id="subFouls">FOULS 3 &ndash; 4</div>
+    <div class="sub-item" id="subShotClock">SHOT <span id="shotClockVal">24</span></div>
+    <div class="sub-item" id="subBonus">BONUS</div>
+    <div class="sub-item" id="subCount">
+      <span class="count-balls" id="ballsCount"></span>
+      <span class="count-strikes" id="strikesCount"></span>
+      <span class="count-outs" id="outsCount"></span>
+    </div>
+    <div class="sub-item" id="subRunners">
+      <svg viewBox="0 0 40 40" class="diamond">
+        <polygon points="20,4 36,20 20,36 4,20" class="diamond-outline"/>
+        <circle cx="20" cy="8" r="5" id="baseSecond" class="base"/>
+        <circle cx="32" cy="20" r="5" id="baseFirst" class="base"/>
+        <circle cx="4" cy="20" r="5" id="baseThird" class="base"/>
+      </svg>
+    </div>
+    <div class="sub-item" id="subSets">SETS <span id="awaySets">0</span> &ndash; <span id="homeSets">0</span></div>
+  </div>
+
+  <div class="celeb-lane" aria-hidden="true">
+    <div class="celeb-cell away">
+      <div id="celebAway" class="celeb-banner">
+        <img class="celeb-logo" alt="">
+        <div class="celeb-fallback"></div>
+        <div class="celeb-copy">
+          <div class="celeb-label"></div>
+          <div class="celeb-points"></div>
+        </div>
+      </div>
+    </div>
+    <div class="celeb-cell center"></div>
+    <div class="celeb-cell home">
+      <div id="celebHome" class="celeb-banner">
+        <img class="celeb-logo" alt="">
+        <div class="celeb-fallback"></div>
+        <div class="celeb-copy">
+          <div class="celeb-label"></div>
+          <div class="celeb-points"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="overlay.js"></script>
+</body>
+</html>
